@@ -7,7 +7,7 @@ jobs:
   lambdas:
     strategy:
       matrix:
-        lambda: [cadastroUsuario,consultaUsuarioPorCpf]
+        lambda: [cadastroUsuario, consultaUsuarioPorCpf]
     runs-on: ubuntu-latest
     environment: aws
     steps:
@@ -15,10 +15,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - run: npm install
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - run: zip -j ${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}/index.js
+      - run: zip -j ${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}/index.mjs ./srv/${{matrix.lambda}}/package.json ./srv/${{matrix.lambda}}/node_modules ./srv/${{matrix.lambda}}/package-lock.json
       - run: aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://${{matrix.lambda}}.zip
