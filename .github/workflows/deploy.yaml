@@ -24,5 +24,5 @@ jobs:
           aws-region: us-east-2
       - run: |
           zip -r ./srv/${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}
-      - run: ls
-      - run: aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://${{matrix.lambda}}.zip
+      - run: ls ./srv/${{matrix.lambda}}
+      - run: aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://./srv/${{matrix.lambda}}.zip
