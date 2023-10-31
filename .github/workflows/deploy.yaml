@@ -9,7 +9,6 @@ jobs:
       matrix:
         lambda: [cadastroUsuario, consultaUsuarioPorCpf]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     environment: aws
     steps:
       - uses: actions/checkout@v3
@@ -23,6 +22,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - run: zip -r ${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}
+      - run: |
+          cd ./srv/${{matrix.lambda}}
+          zip -r ${{matrix.lambda}}.zip ${{matrix.lambda}}
       - run: ls
       - run: aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://${{matrix.lambda}}.zip
