@@ -23,7 +23,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - run: |
-          zip -r ./srv/${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}
+          cd ./srv/${{matrix.lambda}}
+          zip -r ${{matrix.lambda}}.zip ${{matrix.lambda}}
       - run: ls ./srv/${{matrix.lambda}}
+      - run: ls ./srv/
       - run: ls
       - run: aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://./srv/${{matrix.lambda}}.zip
