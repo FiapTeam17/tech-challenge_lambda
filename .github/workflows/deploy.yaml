@@ -15,12 +15,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install
+      - run: npm install --only=prod
         working-directory: ./srv/${{matrix.lambda}}
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - run: zip -j ${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}/index.mjs ./srv/${{matrix.lambda}}/package.json -x ./srv/${{matrix.lambda}}/package-lock.json -x ./srv/${{matrix.lambda}}/node_modules/*
+      - run: |
+          zip -j ${{matrix.lambda}}.zip ./srv/${{matrix.lambda}}/index.mjs ./srv/${{matrix.lambda}}/package.json ./srv/${{matrix.lambda}}/package-lock.json ./srv/${{matrix.lambda}}/node_modules/*
+          zip -r ${{matrix.lambda}}.zip -x "./srv/${{matrix.lambda}}/node_modules/*" -x "./srv/${{matrix.lambda}}/package-lock.json"
       - run: aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://${{matrix.lambda}}.zip
