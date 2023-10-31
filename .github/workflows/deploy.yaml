@@ -24,7 +24,7 @@ jobs:
           aws-region: us-east-2
       - run: |
           cd srv
-          zip -r ${{matrix.lambda}}.zip ${{matrix.lambda}}
+          zip -r ${{matrix.lambda}}.zip ${{matrix.lambda}}/*
           cd ..
       - run: ls ./srv/${{matrix.lambda}}
       - run: ls ./srv/
