@@ -4,19 +4,12 @@ import jwt from 'jsonwebtoken';
 export const handler = async (event, context) => {
     try {
         const cpf = event["cpf"];
-        console.log(cpf);
-        // Recupere as informações de conexão do ambiente
-        const dbEndpoint = "tech-challenge-v2.cu7yj3gjjks1.us-east-2.rds.amazonaws.com";
-        const dbUsername = "admin";
-        const dbPassword = "12345678";
-        const dbName = "sgr_database";
-
         // Crie uma conexão com o banco de dados RDS
         const connection = await mysql.createConnection({
-            host: dbEndpoint,
-            user: dbUsername,
-            password: dbPassword,
-            database: dbName
+            host: process.env.DB_HOST,
+            user: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_SCHEMA
         });
 
         // Execute uma consulta
@@ -30,13 +23,18 @@ export const handler = async (event, context) => {
                 user_id: rows["id"],
                 username: rows["email"]
             };
-            const chaveSecreta = 'chave-secreta-super-segura';
+            const chaveSecreta = process.env.SECRET_KEY;
             const token = jwt.sign(payload, chaveSecreta, { expiresIn: '1h' });
             return {
                 statusCode: 200,
                 body: JSON.stringify(token)
             };
         }
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify('')
+        };
     } catch (error) {
         console.error('Erro:', error);
         return {
