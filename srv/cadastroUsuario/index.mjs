@@ -5,9 +5,9 @@ export const handler = async (event, context) => {
 
     try {
         const jsonInsert = {
-            nome: event["nome"],
-            cpf: event["cpf"],
-            email: event["email"],
+            nome: event.body.nome,
+            cpf: event.body.cpf,
+            email: event.body.email,
         };
 
         // Crie uma conexão com o banco de dados RDS

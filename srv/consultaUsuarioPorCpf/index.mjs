@@ -5,7 +5,7 @@ export const handler = async (event, context) => {
     let connection;
 
     try {
-        const cpf = event["cpf"];
+        const cpf = event.body.cpf;
         // Crie uma conexão com o banco de dados RDS
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
@@ -32,10 +32,9 @@ export const handler = async (event, context) => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify('')
+            body: JSON.stringify({})
         };
     } catch (error) {
-        console.error('Erro:', error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: 'Ocorreu um erro ao acessar o banco de dados.' })
