@@ -23,8 +23,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - run: |
-          cd srv
-          zip -r ${{matrix.lambda}}.zip ${{matrix.lambda}}/*
+          cd srv/${{matrix.lambda}}
+          zip -r ${{matrix.lambda}}.zip .
           cd ..
       - run: ls ./srv/${{matrix.lambda}}
       - run: ls ./srv/
