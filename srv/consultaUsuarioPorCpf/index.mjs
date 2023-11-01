@@ -5,7 +5,7 @@ export const handler = async (event, context) => {
     let connection;
 
     try {
-        const cpf = event.body.cpf;
+        const body = JSON.parse(event.body);
         // Crie uma conexão com o banco de dados RDS
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
@@ -15,7 +15,7 @@ export const handler = async (event, context) => {
         });
 
         // Execute uma consulta
-        const [rows, fields] = await connection.execute('SELECT * FROM Cliente WHERE cpf = ' + cpf + ' LIMIT 1');
+        const [rows, fields] = await connection.execute('SELECT * FROM Cliente WHERE cpf = ' + body.cpf + ' LIMIT 1');
 
         if (rows.length > 0) {
             const payload = {
