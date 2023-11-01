@@ -25,9 +25,8 @@ jobs:
       - run: |
           cd srv/${{matrix.lambda}}
           zip -r ${{matrix.lambda}}.zip .
-          cd ..
       - run: ls ./srv/${{matrix.lambda}}
-      - run: ls ./srv/
+      - run: ls ./srv/${{matrix.lambda}}
       - run: ls
       - run: |
           cd srv
