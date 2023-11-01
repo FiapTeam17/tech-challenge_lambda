@@ -1,7 +1,7 @@
 import * as mysql from "mysql2/promise";
 
 export const handler = async (event, context) => {
-    const connection = null;
+    let connection;
 
     try {
         const jsonInsert = {
@@ -23,6 +23,21 @@ export const handler = async (event, context) => {
             "INSERT INTO Cliente (nome, cpf, email) VALUES (?, ?, ?)",
             [jsonInsert.nome, jsonInsert.cpf, jsonInsert.email]
         );
+
+        if (result.affectedRows === 1) {
+            return {
+                statusCode: 200,
+                body: JSON.stringify({
+                    id: result.insertId,
+                    message: 'Registro inserido com sucesso!'
+                }),
+            };
+        } else {
+            return {
+                statusCode: 500,
+                body: 'Falha ao inserir registro no banco de dados.'
+            };
+        }
     } catch (error) {
         console.error("Erro:", error);
         return {
