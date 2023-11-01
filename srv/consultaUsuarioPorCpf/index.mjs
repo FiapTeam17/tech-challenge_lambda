@@ -15,7 +15,7 @@ export const handler = async (event, context) => {
         });
 
         // Execute uma consulta
-        const [rows, fields] = await connection.execute('SELECT * FROM Cliente WHERE cpf = ' + body.cpf + ' LIMIT 1');
+        const [rows, fields] = await connection.execute('SELECT * FROM Cliente WHERE cpf = ? LIMIT 1', [body.cpf]);
 
         if (rows.length > 0) {
             const payload = {
