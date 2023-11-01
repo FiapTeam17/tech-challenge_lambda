@@ -2,10 +2,12 @@ import * as mysql from 'mysql2/promise';
 import jwt from 'jsonwebtoken';
 
 export const handler = async (event, context) => {
+    let connection;
+
     try {
         const cpf = event["cpf"];
         // Crie uma conexão com o banco de dados RDS
-        const connection = await mysql.createConnection({
+        connection = await mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
@@ -15,10 +17,7 @@ export const handler = async (event, context) => {
         // Execute uma consulta
         const [rows, fields] = await connection.execute('SELECT * FROM Cliente WHERE cpf = ' + cpf + ' LIMIT 1');
 
-        // Encerre a conexão com o banco de dados
-        await connection.end();
-        
-        if(rows.length > 0){
+        if (rows.length > 0) {
             const payload = {
                 user_id: rows["id"],
                 username: rows["email"]
@@ -41,5 +40,7 @@ export const handler = async (event, context) => {
             statusCode: 500,
             body: JSON.stringify({ error: 'Ocorreu um erro ao acessar o banco de dados.' })
         };
+    } finally {
+        await connection.end();
     }
 };
