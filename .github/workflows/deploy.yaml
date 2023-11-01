@@ -29,5 +29,6 @@ jobs:
       - run: ls ./srv/${{matrix.lambda}}
       - run: ls
       - run: |
-          cd srv
-          aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://./srv/${{matrix.lambda}}.zip
+          cd srv/${{matrix.lambda}}
+          ls
+          aws lambda update-function-code --function-name=${{matrix.lambda}} --zip-file=fileb://${{matrix.lambda}}.zip
