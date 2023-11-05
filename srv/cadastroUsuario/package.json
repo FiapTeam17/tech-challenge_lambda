@@ -1,0 +1,7 @@
+{
+    "name": "tech-challenge",
+    "version": "1.0.0",
+    "dependencies": {
+        "mysql2": "^3.3.3"
+    }
+}
