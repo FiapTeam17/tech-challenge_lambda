@@ -2,7 +2,7 @@ name: Deploying multiple Lambdas
 on:
   push:
     branches:
-      - dev
+      - main
 jobs:
   lambdas:
     strategy:
